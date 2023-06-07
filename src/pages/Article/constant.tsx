@@ -1,4 +1,4 @@
-import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select,Table, Tag, Space, Popconfirm } from 'antd'
+import {  Button, Tag, Space, Popconfirm } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import img404 from './img/error.png'
 export const getColumns = (goPublish:any,delArticle:any)=>{
@@ -52,7 +52,7 @@ export const getColumns = (goPublish:any,delArticle:any)=>{
             {/* 删除按钮 */}
             <Popconfirm
               title="确认删除该条文章吗?"
-              onConfirm={() => delArticle(data)}
+              onConfirm={() => delArticle(data.id)}
               okText="确认"
               cancelText="取消"
             >

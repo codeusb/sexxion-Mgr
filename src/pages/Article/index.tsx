@@ -1,9 +1,7 @@
 import { FC } from "react";
 import { Link, useNavigate } from 'react-router-dom'
-import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select,Table, Tag, Space, Popconfirm } from 'antd'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select,Table } from 'antd'
 import { useEffect,useState } from 'react'
-import { http,setToken,getToken,removeToken } from '../../utils'
 import locale from 'antd/es/date-picker/locale/zh_CN'
 import { getArticle, getChannel, deleteArticle } from './api'
 import { articleReq } from './types'
@@ -14,6 +12,8 @@ const { RangePicker } = DatePicker
 const Article:FC = ()=>{
   const [channel,setChannel] = useState<any>(); //频道列表
   const [articleData,setArticleData]= useState<any>() //文章列表
+  const [page,setPage] = useState(1) //页数
+  const navigate = useNavigate()
   // 频道列表
   const getChannelDate = async  () =>{
     const res = await getChannel()
@@ -21,7 +21,7 @@ const Article:FC = ()=>{
   }
   useEffect(()=>{
     getChannelDate()
-    onFinish({})
+    
   },[])
   // 文章列表(筛选)
   const onFinish = async (value: any)=>{
@@ -39,20 +39,30 @@ const Article:FC = ()=>{
         _params.begin_pubdate = date[0].format('YYYY-MM-DD')
         _params.end_pubdate = date[1].format('YYYY-MM-DD')
       }
+      _params.page = '' + page
+      _params.per_page = '10'
     }
+    console.log(_params);
     const res = await getArticle(_params)
     console.log(res);
     setArticleData(res)
   }
-
+  useEffect(()=>{
+    onFinish({})
+  },[page])
   // 分页
-  // 删除
-  const delArticle = ()=>{
-    console.log(2);
+  const pageChange = (page:any)=>{
+    setPage(page)
   }
-  // 跳转
-  const goPublish = ()=>{
-    console.log(1);
+  // 删除
+  const delArticle = async (id:any)=>{
+    console.log(2);
+    await deleteArticle(id)
+    onFinish({})
+  }
+  // 编辑跳转
+  const goPublish = (data:any)=>{
+    navigate(`/publish?id=${data.id}`)
   }
   return(
     <div>
@@ -106,15 +116,15 @@ const Article:FC = ()=>{
         </Form>
       </Card>
       {/* 文章列表区域 */}
-      <Card title={`根据筛选条件共查询到 ${articleData?.count} 条结果：`}>
+      <Card title={`根据筛选条件共查询到 ${articleData?.total_count} 条结果：`}>
         <Table 
           rowKey="id" 
           columns={getColumns(goPublish,delArticle)} 
           dataSource={articleData?.results}
           pagination={{
             pageSize:articleData?.pre_page,
-            total:articleData?.count,
-            // onChange:pageChange
+            total:articleData?.total_count,
+            onChange:pageChange
           }
           }
           />

@@ -19,9 +19,6 @@ export interface channelRes {
   message: string;
 }
 
-export interface delateReq {
-  target:string
-}
 
 export interface delateRes {
   data: any,

@@ -39,11 +39,12 @@ const LayoutPage: React.FC = () => {
         </div>
       </Header>
       <Layout>
-        <Sider width={200} className="site-layout-background">
+        <Sider width={200} >
           <Menu
             mode="inline"
             theme='dark'
             defaultSelectedKeys={[pathname]}
+            selectedKeys={[pathname]}
             // defaultOpenKeys={['/']}
             style={{ height: '100%', borderRight: 0 }}
             items={[
