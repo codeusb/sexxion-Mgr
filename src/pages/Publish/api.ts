@@ -17,3 +17,5 @@ export const getArticleDetail = (id:string) =>
 // 更新文章
 export const updateArticle = (id:string,params:addArticleReq) =>
   http.put<addArticleRes, addArticleRes['data']>(`/mp/articles/${id}?draft=false`,params)
+
+// 上传图片

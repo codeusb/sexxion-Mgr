@@ -63,6 +63,11 @@ const LayoutPage: React.FC = () => {
                 label:'发布文章',
                 onClick: ()=> navigate('/publish'),
               },
+              {
+                key: '/staff',
+                label:'个人中心',
+                onClick: ()=> navigate('/staff'),
+              },
             ]}
           />
         </Sider>

@@ -2,8 +2,9 @@ import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store"
 import Bar from "./components/Bar";
-import { Card, Col, Row,Space } from 'antd'
+import { Card, Col, Row,Breadcrumb } from 'antd'
 import styles from './index.module.less'
+import { Link } from 'react-router-dom'
 
 const About:FC = ()=>{
   const login = useSelector((state: RootState) => state.login) //读取store
@@ -11,7 +12,19 @@ const About:FC = ()=>{
     console.log(login);
   })
   return(
-    <Card >
+    <Card 
+      title={
+        <Breadcrumb separator=">"
+          items={[
+            {
+              title:<Link to='/'>首页</Link>
+            },
+          ]}
+        >
+        </Breadcrumb>
+      }
+      style={{ marginBottom: 20 }}
+    >
       {/* 渲染Bar组件 */}
       <Row gutter={16}>
         <Col span={12} className={styles.ca}>

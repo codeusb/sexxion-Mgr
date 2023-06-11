@@ -5,6 +5,7 @@ import Layout from './pages/Layout'
 import Home from './pages/Home'
 import Article from './pages/Article'
 import Publish from './pages/Publish'
+import Staff from './pages/Staff'
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: 'publish',
         element: <Publish />
+      },
+      {
+        path: 'staff',
+        element: <Staff />
       },
     ]
   },
