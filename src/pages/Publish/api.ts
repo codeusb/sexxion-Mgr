@@ -19,3 +19,5 @@ export const updateArticle = (id:string,params:addArticleReq) =>
   http.put<addArticleRes, addArticleRes['data']>(`/mp/articles/${id}?draft=false`,params)
 
 // 上传图片
+export const uploadPic = (params:FormData) =>
+  http.post<any,any>("/upload",params)

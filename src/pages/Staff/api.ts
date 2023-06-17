@@ -23,5 +23,5 @@ export const getUserFollowers = (params:userFansReq) =>
 export const updateUserPro = (params:updateUserInfoReq) =>
   http.patch<resData,resData>("/user/profile",params)
 // 更新-用户照片资料
-export const updateUserPhoto = (params:updateUserPhotoReq) =>
+export const updateUserPhoto = (params:FormData) =>
   http.patch<resData,resData>("/user/photo",params)

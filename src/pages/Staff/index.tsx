@@ -16,7 +16,6 @@ import {
 import {FormInstance,UploadProps,UploadFile} from 'antd'
 import type { RcFile } from 'antd/lib/upload';
 import { useEffect, useState, useRef } from 'react'
-import locale from 'antd/es/date-picker/locale/zh_CN'
 import {
   getUserDatail,
   getUserFollow,
@@ -33,25 +32,12 @@ const Staff: FC = memo(() => {
   const [follow, setFollow] = useState<any>()
   const [fan, setFan] = useState<any>()
   const [isModal,setIsModal] = useState<boolean>(false) //开启弹窗
-  const [fileList,setFileList] = useState<any[]>([])//上传图片列表
-
-  const onChange:UploadProps['onChange'] = async ({fileList:newFileList, file:newFile}) =>{
-    const t = fileList.map((file:any) => {
-      if (file.response) { //上传完毕
-        return {
-          url: file.response.data.url
-        }
-      }
-      return file
-    })
-    console.log(t);
-    
-    console.log(newFileList,newFile)
-    console.log(newFile.response);
-    await updateUserPhoto({photo:newFileList})
-    setFileList(newFileList)
-  }
-  const onPreview = async (file:UploadFile) =>{
+  const [fileList, setFileList] = useState<UploadFile[]>([]); //上传图片列表
+  //上传图片
+  const onUploadChange: UploadProps['onChange'] = async ({ fileList: newFileList, file: newFile }) => {
+    setFileList(newFileList);
+  };
+  const onPreview = async (file: UploadFile) => {
     let src = file.url as string;
     if (!src) {
       src = await new Promise((resolve) => {
@@ -60,9 +46,25 @@ const Staff: FC = memo(() => {
         reader.onload = () => resolve(reader.result as string);
       });
     }
-    console.log(src);
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+  //上传图片
+  const upload = async () =>{
+    console.log(fileList,fileList[0].originFileObj);
+    try{
+      const body = new FormData();
+      body.append('photo',fileList[0].originFileObj as File)
+      console.log(body);
+      const data = await updateUserPhoto(body)
+      console.log(data);
+    }
+    catch(error){
+      console.log(error);
+    }
   }
-
   const getData = async () => {
     const res = await getUserDatail()
     setUserData(res)
@@ -121,7 +123,6 @@ const Staff: FC = memo(() => {
           ]}></Breadcrumb>
       }
       style={{ marginBottom: 20 }}>
-      <Divider />
       <Descriptions title="用户信息">
         <Descriptions.Item label="用户名">{userData?.name}</Descriptions.Item>
         <Descriptions.Item label="用户介绍">{userData?.intro}</Descriptions.Item>
@@ -129,37 +130,45 @@ const Staff: FC = memo(() => {
         <Descriptions.Item label="关注数">{userData?.follow_count}</Descriptions.Item>
         <Descriptions.Item label="粉丝数">{userData?.fans_count}</Descriptions.Item>
         <Descriptions.Item label="点赞数">{userData?.like_count}</Descriptions.Item>
+        <Descriptions.Item label="用户头像"><img src={userData?.photo} alt="" width={120} height={120}/></Descriptions.Item>
       </Descriptions>
       <Divider />
-      <Descriptions title="关注列表"/>
-      <List
-        bordered
-        dataSource={follow}
-        renderItem={(item:any) => <List.Item>{item.name}</List.Item>}
-      />
-      <Divider />
-      <Descriptions title="粉丝列表"/>
-      <List
-        bordered
-        dataSource={fan}
-        renderItem={(item:any) => <List.Item>{item.name}</List.Item>}
-      />
+      <div style={{display:'flex'}}>
+        <div style={{width:'50%'}}>
+          <Descriptions title="关注列表"/>
+            <List
+              bordered
+              dataSource={follow}
+              renderItem={(item:any) => <List.Item>{item.name}</List.Item>}
+            />
+        </div>
+        <div style={{width:'50%'}}>
+        <Descriptions title="粉丝列表"/>
+          <List
+            bordered
+            dataSource={fan}
+            renderItem={(item:any) => <List.Item>{item.name}</List.Item>}
+          />
+        </div>
+      </div>
       <Divider />
       <Button type='primary' onClick={()=>setIsModal(true)} style={{marginRight:16}}>更改个人资料</Button>
       <Button onClick={updateUsetInfo}>还原个人资料</Button>
       <Divider />
-      {/* <Upload
-        // name="img"
-        showUploadList
+      <Descriptions title="更改用户头像"/>
+      <Upload
+        // name="photo"
         listType="picture-card"
-        action="http://geek.itheima.net/v1_0/user/photo"
+        showUploadList
+        action=''
         fileList={fileList}
-        onChange={onChange}
-        method='PATCH'
-        // onPreview={onPreview}
+        onChange={onUploadChange}
+        beforeUpload={file => false} //首先阻止默认的上传请求
+        onPreview={onPreview}
       >
-        {fileList?.length < 1 && '+ Upload'}
-      </Upload> */}
+        {fileList?.length < 1 && '+ 上传'}
+      </Upload>
+      <Button onClick={upload}>上传更改图片</Button>
       <Modal 
         title="填写更改信息" 
         open={isModal} 
