@@ -2,8 +2,14 @@
 import * as echarts from 'echarts'
 import { useEffect, useRef } from 'react'
 
-type BarType = {title:any,xData:any,yData:any,style:any}
+type BarType = {
+  title:any,
+  xData:any,
+  yData:any,
+  style:any
+}
 
+//柱状图
 function Bar({title,xData,yData,style}:BarType){
   const domRef = useRef<HTMLDivElement | null>(null)
   const chartInit = ()=>{
