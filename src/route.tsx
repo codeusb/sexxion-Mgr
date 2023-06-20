@@ -1,11 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom'
+import { lazy } from 'react'
 
-import Login from './pages/Login'
 import Layout from './pages/Layout'
-import Home from './pages/Home'
-import Article from './pages/Article'
-import Publish from './pages/Publish'
-import Staff from './pages/Staff'
+import Login from './pages/Login'
+// const Login = lazy(() => import('./pages/Login'))
+const Home = lazy(() => import('./pages/Home'))
+const Article = lazy(() => import('./pages/Article'))
+const Publish = lazy(() => import('./pages/Publish'))
+const Staff = lazy(() => import('./pages/Staff'))
 
 import AuthRoute from './components/AuthRoute'
 

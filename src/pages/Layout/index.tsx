@@ -6,6 +6,8 @@ import { LogoutOutlined } from '@ant-design/icons'
 import { removeToken } from '../../utils'
 import { getUserInfo } from './api'
 const { Header, Sider } = Layout
+import PageLoading from '../../components/PageLoading'
+import { Suspense } from 'react'
 
 const LayoutPage: React.FC = () => {
   const navigate = useNavigate()
@@ -75,7 +77,9 @@ const LayoutPage: React.FC = () => {
           />
         </Sider>
         <Layout style={{ padding: '16px 24px 24px' }}>
-          <Outlet />
+          <Suspense fallback={<PageLoading />}>
+            <Outlet />
+          </Suspense>
         </Layout>
       </Layout>
     </Layout>

@@ -12,6 +12,7 @@ import {
   Modal,
   Input,
   Upload,
+  message,
 } from 'antd'
 import {FormInstance,UploadProps,UploadFile} from 'antd'
 import type { RcFile } from 'antd/lib/upload';
@@ -60,6 +61,8 @@ const Staff: FC = memo(() => {
       console.log(body);
       const data = await updateUserPhoto(body)
       console.log(data);
+      message.success('更改头像成功')
+      window.location.reload()
     }
     catch(error){
       console.log(error);
@@ -92,6 +95,7 @@ const Staff: FC = memo(() => {
       intro: '嘻嘻',
     }
     await updateUserPro(params)
+    window.location.reload()
   }
   // 更新-用户资料
   const handleOk = async () =>{
@@ -105,8 +109,10 @@ const Staff: FC = memo(() => {
       intro: formData?.intro,
     }
     await updateUserPro(params)
+    message.success('更新成功')
     setIsModal(false)
     from.current!.resetFields() //清理表单回填数据
+    window.location.reload()
   }
   return (
     <Card
