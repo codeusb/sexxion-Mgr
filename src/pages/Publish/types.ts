@@ -1,34 +1,40 @@
 export interface channelRes {
   data: {
-    channels: any[]
-  };
-  message: string;
+    channels: channelsData[]
+  }
+  message: string
 }
+
+export interface channelsData {
+  id: number
+  name: string
+}
+
 // 新增文章
 export interface addArticleReq {
-  title:string,
-  content:string,
-  cover:any,
-  channel_id: any
+  title: string
+  content: string
+  cover: { type: number; images: string[] }
+  channel_id: number | string
 }
 
-export interface addArticleRes{
+export interface addArticleRes {
   data: {
     id: string
-  };
-  message: string;
+  }
+  message: string
 }
 
-export interface getArticleDetailRes{
-  data: detailData;
-  message: string;
+export interface getArticleDetailRes {
+  data: detailData
+  message: string
 }
 
-export interface detailData{
-  id:string,
-  title:string,
-  channel_id: string,
-  content: string,
-  cover:any,
-  pub_date:string,
+export interface detailData {
+  id: string
+  title: string
+  channel_id: string
+  content: string
+  cover: { type: number; images: string[] }
+  pub_date: string
 }

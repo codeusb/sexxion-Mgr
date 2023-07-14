@@ -1,73 +1,91 @@
-import {  Button, Tag, Space, Popconfirm } from 'antd'
+import { Button, Tag, Space, Popconfirm } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import img404 from './img/error.png'
-export const getColumns = (goPublish:any,delArticle:any)=>{
-  const columns = [
+import { articleResultData } from './types'
+import { ColumnsType } from 'antd/es/table'
+
+export const getColumns = (
+  goPublish: (id: string) => void,
+  delArticle: (id: string) => void
+) => {
+  const columns: ColumnsType<articleResultData> = [
     {
       title: '封面',
       dataIndex: 'cover',
-      width:120,
-      render: (cover:any) => {
-        return <img src={cover.images[0] || img404} width={80} height={60} alt="" />
-      }
+      align: 'center',
+      width: 120,
+      render: (_, record) => {
+        return (
+          <img
+            src={record.cover.images[0] || img404}
+            width={80}
+            height={60}
+            alt=""
+          />
+        )
+      },
     },
     {
       title: '标题',
       dataIndex: 'title',
-      width: 220
+      width: 220,
+      align: 'center',
     },
     {
       title: '状态',
       dataIndex: 'status',
-      render: (data:any) => <Tag color="green">审核通过</Tag>
+      align: 'center',
+      render: () => <Tag color="green">审核通过</Tag>,
     },
     {
       title: '发布时间',
-      dataIndex: 'pubdate'
+      dataIndex: 'pubdate',
+      align: 'center',
     },
     {
       title: '阅读数',
-      dataIndex: 'read_count'
+      dataIndex: 'read_count',
+      align: 'center',
     },
     {
       title: '评论数',
-      dataIndex: 'comment_count'
+      dataIndex: 'comment_count',
+      align: 'center',
     },
     {
       title: '点赞数',
-      dataIndex: 'like_count'
+      dataIndex: 'like_count',
+      align: 'center',
     },
     {
       title: '操作',
-      render: (data:any) => {
+      dataIndex: 'operate',
+      align: 'center',
+      render: (_, record) => {
         return (
           <Space size="middle">
-            {/* 编辑按钮 */}
-            <Button 
-              type="primary" 
-              shape="circle" 
-              icon={<EditOutlined />} 
-              onClick={()=>goPublish(data)}
-              />
-            {/* 删除按钮 */}
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<EditOutlined />}
+              onClick={() => goPublish(record?.id)}
+            />
             <Popconfirm
               title="确认删除该条文章吗?"
-              onConfirm={() => delArticle(data.id)}
+              onConfirm={() => delArticle(record.id)}
               okText="确认"
-              cancelText="取消"
-            >
+              cancelText="取消">
               <Button
                 type="primary"
                 danger
                 shape="circle"
-                icon={<DeleteOutlined />
-                }
+                icon={<DeleteOutlined />}
               />
             </Popconfirm>
           </Space>
         )
-      }
-    }
+      },
+    },
   ]
   return columns
-} 
+}

@@ -1,11 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit'
 import login from './login'
+import UserInfo from './common'
 
 export const store = configureStore({
   reducer: {
     login: login,
+    userInfo: UserInfo,
   },
-});
+})
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

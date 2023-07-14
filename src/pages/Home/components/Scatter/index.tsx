@@ -1,12 +1,16 @@
 import * as echarts from 'echarts'
-import { useEffect, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
+
+interface IProps {
+  style?: React.CSSProperties
+}
 
 //饼图
-const Scatter = ({style}:any) =>{
+const Scatter: FC<IProps> = ({ style }) => {
   const domRef = useRef<HTMLDivElement | null>(null)
 
-  const chartInit = () =>{
-    const myChart = echarts.init(domRef.current as HTMLDivElement);
+  const chartInit = () => {
+    const myChart = echarts.init(domRef.current as HTMLDivElement)
     const option = {
       xAxis: {},
       yAxis: {},
@@ -35,18 +39,18 @@ const Scatter = ({style}:any) =>{
             [12.0, 6.26],
             [12.0, 8.84],
             [7.08, 5.82],
-            [5.02, 5.68]
+            [5.02, 5.68],
           ],
-          type: 'scatter'
-        }
-      ]
-    };
+          type: 'scatter',
+        },
+      ],
+    }
     myChart.setOption(option)
   }
-  useEffect(()=>{
+  useEffect(() => {
     chartInit()
-  },[])
-  return(
+  }, [])
+  return (
     <div>
       <div ref={domRef} style={style}></div>
     </div>

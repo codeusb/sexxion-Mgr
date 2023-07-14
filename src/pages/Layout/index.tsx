@@ -8,11 +8,16 @@ import { getUserInfo } from './api'
 const { Header, Sider } = Layout
 import PageLoading from '../../components/PageLoading'
 import { Suspense } from 'react'
+import { setMyUserInfo } from '../../store/common'
+import { useDispatch } from 'react-redux'
+import { Dispatch } from '@reduxjs/toolkit'
+import { userInfoData } from './types'
 
 const LayoutPage: React.FC = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation() //获取当前路由信息
-  const [userInfo, setUserInfo] = useState<any>()
+  const [userInfo, setUserInfo] = useState<userInfoData>({} as userInfoData) //用户信息
+  const dispath: Dispatch = useDispatch()
   // 退出登录
   const onConfirm = () => {
     removeToken()
@@ -21,10 +26,12 @@ const LayoutPage: React.FC = () => {
   // 获取用户信息
   const getData = async () => {
     const res = await getUserInfo()
+    dispath(setMyUserInfo(res))
     setUserInfo(res)
   }
   useEffect(() => {
     getData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <Layout className={styles.antLayout}>

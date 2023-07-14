@@ -7,7 +7,6 @@ interface GlobalResponseBodyStruct<T> {
 }
 
 const http = axios.create({
-  // baseURL: 'https://some-domain.com/api/',
   baseURL: 'http://geek.itheima.net/v1_0',
   timeout: 5000,
   // headers: {'X-Custom-Header': 'foobar'}
@@ -31,10 +30,11 @@ http.interceptors.request.use(
 
 // 添加响应拦截器
 http.interceptors.response.use(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function (response: AxiosResponse<GlobalResponseBodyStruct<any> | any>) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
-    const { data, message } = response.data || {}
+    const { data } = response.data || {}
     // console.log(message, data);
     return data
   },

@@ -20,4 +20,5 @@ export const updateArticle = (id:string,params:addArticleReq) =>
 
 // 上传图片
 export const uploadPic = (params:FormData) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   http.post<any,any>("/upload",params)

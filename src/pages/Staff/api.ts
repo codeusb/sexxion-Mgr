@@ -7,7 +7,6 @@ import {
   userFansRes,
   updateUserInfoReq,
   resData,
-  updateUserPhotoReq,
   } from './types'
 
 // 获取-用户详细资料
